@@ -12,6 +12,7 @@ using AssistantHytale.Data.Helper;
 using AssistantHytale.Domain.Configuration;
 using AssistantHytale.Domain.Configuration.Interface;
 using AssistantHytale.Domain.Constants;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace AssistantHytale.Api
 {
@@ -33,6 +34,11 @@ namespace AssistantHytale.Api
             services.RegisterThirdPartyServicesForApi(ApiConfiguration);
             services.RegisterAuthenticationServicesForApi(ApiConfiguration);
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             services.AddCors();
             services.AddRouting();
             services.AddMvc().AddNewtonsoftJson()
@@ -41,6 +47,7 @@ namespace AssistantHytale.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
                 //app.UseDatabaseErrorPage();
@@ -61,14 +68,18 @@ namespace AssistantHytale.Api
             );
             //db.Database.Migrate();
 
-            app.UseSwagger();
+            SwaggerBuilderExtensions.UseSwagger(app);
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"/swagger/{ApiAccess.Public}/swagger.json", "AssistantSMS API - Public");
-                c.SwaggerEndpoint($"/swagger/{ApiAccess.All}/swagger.json", "AssistantSMS API - All");
-                c.DocumentTitle = "AssistantSMS API Documentation";
+                c.SwaggerEndpoint($"/swagger/{ApiAccess.Public}/swagger.json", "AssistantHytale API - Public");
+                c.SwaggerEndpoint($"/swagger/{ApiAccess.All}/swagger.json", "AssistantHytale API - All");
+                c.DocumentTitle = "AssistantHytale API Documentation";
                 c.RoutePrefix = string.Empty;
                 c.DisplayRequestDuration();
+
+                //c.OAuthClientId("assistant_hytale");
+                //c.OAuthAppName("Assistant for Hytale API - Swagger");
+                //c.OAuthUsePkce();
             });
 
             app.Use(async (context, next) =>
@@ -82,6 +93,7 @@ namespace AssistantHytale.Api
             });
 
             app.UseHttpsRedirection();
+            app.UseCookiePolicy();
             app.UseAuthentication();
 
             app.UseRouting();

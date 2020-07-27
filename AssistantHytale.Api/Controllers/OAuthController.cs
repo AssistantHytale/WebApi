@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AssistantHytale.Domain.Constants;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AssistantHytale.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class OAuthController : ControllerBase
     {
         /// <summary>
         /// Google Sign in
@@ -13,7 +15,7 @@ namespace AssistantHytale.Api.Controllers
         [Route("Google")]
         public IActionResult GoogleSignIn()
         {
-            return RedirectPermanent("https://scrapassistant.com/favicon.ico");
+            return Challenge(new AuthenticationProperties { RedirectUri = ApiUrl.Account }, "Google");
         }
     }
 }

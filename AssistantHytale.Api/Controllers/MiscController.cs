@@ -24,7 +24,7 @@ namespace AssistantHytale.Api.Controllers
         [Route("/favicon.ico")]
         public IActionResult HandleFaviconRequest()
         {
-            return RedirectPermanent("https://scrapassistant.com/favicon.ico");
+            return RedirectPermanent("https://hytaleassistant.com/favicon.ico");
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace AssistantHytale.Api.Controllers
         [Route("/robots.txt")]
         public IActionResult HandleRobots()
         {
-            return RedirectPermanent("https://scrapassistant.com/robots.txt");
+            return RedirectPermanent("https://hytaleassistant.com/robots.txt");
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace AssistantHytale.Api.Controllers
         [Route("/{*url}", Order = 999)]
         public IActionResult CatchAll(string url)
         {
-            return RedirectPermanent("https://api.scrapassistant.com");
+            return RedirectPermanent("https://api.hytaleassistant.com");
         }
     }
 }
