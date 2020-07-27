@@ -15,7 +15,7 @@ namespace AssistantHytale.Api.Controllers
         [Route("Google")]
         public IActionResult GoogleSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = ApiUrl.Account }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = ApiUrl.GoogleResponse }, "Google");
         }
     }
 }
