@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssistantHytale.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ContactController : ControllerBase
     {
