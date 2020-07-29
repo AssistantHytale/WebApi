@@ -12,7 +12,8 @@ using AssistantHytale.Data.Helper;
 using AssistantHytale.Domain.Configuration;
 using AssistantHytale.Domain.Configuration.Interface;
 using AssistantHytale.Domain.Constants;
-using Microsoft.AspNetCore.HttpOverrides;
+using AssistantHytale.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace AssistantHytale.Api
 {
@@ -32,12 +33,6 @@ namespace AssistantHytale.Api
 
             services.RegisterCommonServices(ApiConfiguration);
             services.RegisterThirdPartyServicesForApi(ApiConfiguration);
-            services.RegisterAuthenticationServicesForApi(ApiConfiguration);
-
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
 
             services.AddCors();
             services.AddRouting();
@@ -45,7 +40,7 @@ namespace AssistantHytale.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HytaleAssistantContext db)
         {
             app.UseForwardedHeaders();
             if (env.IsDevelopment())
@@ -56,19 +51,18 @@ namespace AssistantHytale.Api
             else
             {
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseCors(builder =>
-                builder.WithOrigins(ApiConfiguration.AllowedHosts.ToArray())
-                    .WithMethods(ApiCorsSettings.AllowedMethods)
-                    .WithHeaders(ApiCorsSettings.ExposedHeaders)
-                    .WithExposedHeaders(ApiCorsSettings.ExposedHeaders)
-                    .SetPreflightMaxAge(TimeSpan.FromSeconds(30))
-                    //.AllowCredentials()
+            app.UseCors(builder => builder.WithOrigins(ApiConfiguration.AllowedHosts.ToArray())
+                .WithMethods(ApiCorsSettings.AllowedMethods)
+                .WithHeaders(ApiCorsSettings.ExposedHeaders)
+                .WithExposedHeaders(ApiCorsSettings.ExposedHeaders)
+                .SetPreflightMaxAge(TimeSpan.FromSeconds(30)).AllowCredentials()
             );
-            //db.Database.Migrate();
+            db.Database.Migrate();
 
-            SwaggerBuilderExtensions.UseSwagger(app);
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint($"/swagger/{ApiAccess.Public}/swagger.json", "AssistantHytale API - Public");
@@ -76,10 +70,6 @@ namespace AssistantHytale.Api
                 c.DocumentTitle = "AssistantHytale API Documentation";
                 c.RoutePrefix = string.Empty;
                 c.DisplayRequestDuration();
-
-                //c.OAuthClientId("assistant_hytale");
-                //c.OAuthAppName("Assistant for Hytale API - Swagger");
-                //c.OAuthUsePkce();
             });
 
             app.Use(async (context, next) =>
@@ -92,10 +82,7 @@ namespace AssistantHytale.Api
                 await next();
             });
 
-            app.UseHttpsRedirection();
-            app.UseCookiePolicy();
             app.UseAuthentication();
-
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

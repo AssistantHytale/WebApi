@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AssistantHytale.Domain.Dto.Enum;
 using Microsoft.EntityFrameworkCore;
 using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Repository.Interface;
@@ -56,11 +57,16 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<ResultWithValue<User>> GetUser(string username, string passwordHash)
+        public async Task<ResultWithValue<User>> GetUser(OAuthProviderType oAuthType, string emailHash)
         {
+            if (oAuthType == OAuthProviderType.Unknown)
+            {
+                return new ResultWithValue<User>(false, new User(), "Unknown OAuth provider");
+            }
+
             try
             {
-                User user = await _db.Users.FirstAsync(u => u.Username.Equals(username) && u.HashedPassword.Equals(passwordHash));
+                User user = await _db.Users.FirstAsync(u => u.OAuthType == oAuthType && u.EmailHash.Equals(emailHash));
                 return new ResultWithValue<User>(true, user, string.Empty);
             }
             catch (Exception ex)

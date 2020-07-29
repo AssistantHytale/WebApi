@@ -8,7 +8,6 @@ namespace AssistantHytale.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<Contributor> Contributors { get; set; }
         public DbSet<Setting> Settings { get; set; }
-        public DbSet<CommunityLink> CommunityLinks { get; set; }
 
 
         public HytaleAssistantContext(DbContextOptions<HytaleAssistantContext> options) : base(options)
@@ -27,7 +26,6 @@ namespace AssistantHytale.Persistence
             UserPermission.MapRelationships(modelBuilder);
             Contributor.MapRelationships(modelBuilder);
             Setting.MapRelationships(modelBuilder);
-            CommunityLink.MapRelationships(modelBuilder);
         }
     }
 

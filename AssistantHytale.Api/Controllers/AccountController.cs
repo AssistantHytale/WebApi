@@ -1,8 +1,8 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AssistantHytale.Api.Model;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using AssistantHytale.Data.Service;
+using AssistantHytale.Domain.Dto.Enum;
+using AssistantHytale.Domain.Dto.ViewModel;
+using AssistantHytale.Domain.Result;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssistantHytale.Api.Controllers
@@ -11,38 +11,26 @@ namespace AssistantHytale.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private SignInManager<ExternalUser> _signInManager;
+        private readonly IUserService _userService;
 
-        /// <summary>
-        /// Account
-        /// </summary>
-        [HttpGet]
-        [Route("Google")]
-        public async Task<IActionResult> Home(string errorCode, string code)
+        public AccountController(IUserService userService)
         {
-            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-                return RedirectToAction(nameof(Login));
-
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-            string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
-            if (result.Succeeded)
-                return Ok(new {
-                errorCode,
-                code,
-                additional = userInfo
-            });
-            return new ForbidResult();
+            _userService = userService;
         }
 
         /// <summary>
-        /// Login
+        /// OAuth Login
         /// </summary>
-        [HttpGet]
+        [HttpPost]
         [Route("Login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login([FromBody] OAuthUserViewModel oauthVm)
         {
-            return Ok();
+            if (oauthVm.OAuthType == OAuthProviderType.Unknown) return BadRequest("Invalid OAuth login");
+
+            ResultWithValue<string> jwtResult = await _userService.GetJwtTokenFromOAuthLogin(oauthVm);
+            if (jwtResult.HasFailed) return BadRequest("Login failed");
+
+            return Ok(jwtResult.Value);
         }
 
         /// <summary>

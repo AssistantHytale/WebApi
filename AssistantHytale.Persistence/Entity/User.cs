@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AssistantHytale.Domain.Dto.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssistantHytale.Persistence.Entity
@@ -11,10 +12,19 @@ namespace AssistantHytale.Persistence.Entity
         public Guid Guid { get; set; }
 
         [Required]
+        public string ProfileImageUrl { get; set; }
+
+        [Required]
         public string Username { get; set; }
 
         [Required]
-        public string HashedPassword { get; set; }
+        public string EmailHash { get; set; }
+
+        [Required]
+        public OAuthProviderType OAuthType { get; set; }
+
+        [Required]
+        public string OAuthUserId { get; set; }
 
         [Required]
         public DateTime JoinDate { get; set; }

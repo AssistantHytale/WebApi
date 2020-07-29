@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AssistantHytale.Domain.Dto.Enum;
 using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Entity;
 
@@ -13,7 +14,7 @@ namespace AssistantHytale.Persistence.Repository.Interface
         Task<Result> DeleteUser(Guid userGuid);
         Task<ResultWithValue<User>> GetUser(Guid guid);
         Task<ResultWithValue<User>> GetUser(string username);
-        Task<ResultWithValue<User>> GetUser(string username, string passwordHash);
+        Task<ResultWithValue<User>> GetUser(OAuthProviderType oAuthType, string emailHash);
         Task<ResultWithValue<List<User>>> GetUsers();
     }
 }

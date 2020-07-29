@@ -33,7 +33,7 @@ namespace AssistantHytale.Data.Helper
         {
             services.AddDbContext<HytaleAssistantContext>(options => options
                 .UseLazyLoadingProxies()
-                .UseSqlServer(config.Database.ConnectionString, dbOptions => dbOptions.MigrationsAssembly("AssistantHytale.WebApi"))
+                .UseSqlServer(config.Database.ConnectionString, dbOptions => dbOptions.MigrationsAssembly("AssistantHytale.Api"))
             );
         }
         
