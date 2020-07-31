@@ -1,12 +1,11 @@
 ﻿using AssistantHytale.Domain.Dto.Enum;
 
-namespace AssistantHytale.Domain.Dto.ViewModel
+namespace AssistantHytale.Domain.Contract
 {
-    public class OAuthUserViewModel
+    public class OAuthUser
     {
         public OAuthProviderType OAuthType { get; set; }
-        public string AccessToken { get; set; }
-        public string TokenId { get; set; }
+        public string OAuthUserId { get; set; }
         public string ProfileUrl { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }

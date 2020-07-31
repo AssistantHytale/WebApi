@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AssistantHytale.Data.Helper;
 using AssistantHytale.Data.Repository.Interface;
+using AssistantHytale.Domain.Contract;
 using AssistantHytale.Domain.Dto.ViewModel;
 using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Entity;
@@ -21,14 +22,14 @@ namespace AssistantHytale.Data.Service
             _userRepo = userRepo;
         }
 
-        public async Task<ResultWithValue<string>> GetJwtTokenFromOAuthLogin(OAuthUserViewModel viewModel)
+        public async Task<ResultWithValue<string>> GetJwtTokenFromOAuthLogin(OAuthUser domain)
         {
-            string emailHash = HashSaltHelper.GetHashString(viewModel.Email, viewModel.OAuthUserId);
+            string emailHash = HashSaltHelper.GetHashString(domain.Email, domain.OAuthUserId);
 
-            ResultWithValue<User> getUserResult = await _userRepo.GetUser(viewModel.OAuthType, emailHash);
-            if (getUserResult.IsSuccess) return _jwtRepo.GenerateToken(viewModel.Username, getUserResult.Value.Guid);
+            ResultWithValue<User> getUserResult = await _userRepo.GetUser(domain.OAuthType, emailHash);
+            if (getUserResult.IsSuccess) return _jwtRepo.GenerateToken(getUserResult.Value.Username, getUserResult.Value.Guid);
 
-            User newUser = viewModel.ToPersistence(new Guid(), emailHash);
+            User newUser = domain.ToPersistence(new Guid(), emailHash);
             Result createUserResult = await _userRepo.CreateUser(newUser);
             if (createUserResult.IsSuccess) return _jwtRepo.GenerateToken(newUser.Username, newUser.Guid);
 

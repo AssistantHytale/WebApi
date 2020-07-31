@@ -1,13 +1,13 @@
 ﻿using System;
 using AssistantHytale.Domain.Constants;
-using AssistantHytale.Domain.Dto.ViewModel;
+using AssistantHytale.Domain.Contract;
 using AssistantHytale.Persistence.Entity;
 
 namespace AssistantHytale.Persistence.Mapper
 {
     public static class UserMapper
     {
-        public static User ToPersistence(this OAuthUserViewModel oAuth, Guid guid, string emailHash)
+        public static User ToPersistence(this OAuthUser oAuth, Guid guid, string emailHash)
         {
             User persistence = new User
             {
