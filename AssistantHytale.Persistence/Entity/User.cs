@@ -15,10 +15,15 @@ namespace AssistantHytale.Persistence.Entity
         public string ProfileImageUrl { get; set; }
 
         [Required]
+        [MaxLength(100)]
         public string Username { get; set; }
 
         [Required]
         public string EmailHash { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Email { get; set; }
 
         [Required]
         public OAuthProviderType OAuthType { get; set; }
@@ -28,6 +33,8 @@ namespace AssistantHytale.Persistence.Entity
 
         [Required]
         public DateTime JoinDate { get; set; }
+
+        public virtual ICollection<GuideMeta> GuideMetas { get; set; }
 
         #region Relationships
 

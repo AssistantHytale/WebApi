@@ -72,7 +72,7 @@ namespace AssistantHytale.Persistence.Entity
         public string Twitter { get; set; }
 
         [Required]
-        public ServerApprovalStatus ApprovalStatus { get; set; }
+        public AdminApprovalStatus ApprovalStatus { get; set; }
         
         [Required]
         public DateTime CreateDateTime { get; set; }

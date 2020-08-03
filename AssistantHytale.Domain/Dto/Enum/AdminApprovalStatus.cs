@@ -1,6 +1,6 @@
 ﻿namespace AssistantHytale.Domain.Dto.Enum
 {
-    public enum ServerApprovalStatus
+    public enum AdminApprovalStatus
     {
         Pending,
         InReview,

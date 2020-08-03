@@ -22,7 +22,7 @@ namespace AssistantHytale.Domain.Dto.ViewModel.Server
         public string Reddit { get; set; }
         public string Facebook { get; set; }
         public string Twitter { get; set; }
-        public ServerApprovalStatus ApprovalStatus { get; set; }
+        public AdminApprovalStatus ApprovalStatus { get; set; }
         public DateTime CreateDateTime { get; set; }
         public DateTime UpdatedDateTime { get; set; }
     }

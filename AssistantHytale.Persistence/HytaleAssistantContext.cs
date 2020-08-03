@@ -9,6 +9,10 @@ namespace AssistantHytale.Persistence
         public DbSet<Contributor> Contributors { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Server> Servers { get; set; }
+        public DbSet<GuideMeta> GuideMetas { get; set; }
+        public DbSet<GuideDetail> GuideDetails { get; set; }
+        public DbSet<GuideMetaGuideDetail> GuideMetaGuideDetails { get; set; }
+        public DbSet<GuideContent> GuideContents { get; set; }
 
 
         public HytaleAssistantContext(DbContextOptions<HytaleAssistantContext> options) : base(options)
@@ -28,6 +32,10 @@ namespace AssistantHytale.Persistence
             Contributor.MapRelationships(modelBuilder);
             Setting.MapRelationships(modelBuilder);
             Server.MapRelationships(modelBuilder);
+            GuideMeta.MapRelationships(modelBuilder);
+            GuideDetail.MapRelationships(modelBuilder);
+            GuideMetaGuideDetail.MapRelationships(modelBuilder);
+            GuideContent.MapRelationships(modelBuilder);
         }
     }
 

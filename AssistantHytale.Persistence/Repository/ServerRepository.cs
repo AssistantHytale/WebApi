@@ -24,7 +24,7 @@ namespace AssistantHytale.Persistence.Repository
         public async Task<ResultWithValueAndPagination<List<Server>>> GetAll(int page)
         {
             List<Server> servers = await _db.Servers
-                .Where(s => s.ApprovalStatus == ServerApprovalStatus.Approved)
+                .Where(s => s.ApprovalStatus == AdminApprovalStatus.Approved)
                 .OrderBy(f => f.CreateDateTime)
                 .Skip(page * _pageSize)
                 .Take(20)
