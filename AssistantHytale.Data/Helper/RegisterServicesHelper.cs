@@ -26,6 +26,7 @@ namespace AssistantHytale.Data.Helper
 
             // Persistence Repositories
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IServerRepository, ServerRepository>();
 
             // Integration Repositories
             //services.AddTransient<IStreamNewsScrapeRepository, StreamNewsScrapeRepository>();

@@ -4,14 +4,16 @@ using AssistantHytale.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AssistantHytale.Api.Migrations
 {
     [DbContext(typeof(HytaleAssistantContext))]
-    partial class HytaleAssistantContextModelSnapshot : ModelSnapshot
+    [Migration("20200803092159_AddStatusToServers")]
+    partial class AddStatusToServers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
