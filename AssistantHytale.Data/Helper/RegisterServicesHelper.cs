@@ -4,6 +4,8 @@ using AssistantHytale.Data.Repository;
 using AssistantHytale.Data.Repository.Interface;
 using AssistantHytale.Data.Service;
 using AssistantHytale.Domain.Configuration.Interface;
+using AssistantHytale.Integration.Repository;
+using AssistantHytale.Integration.Repository.Interface;
 using AssistantHytale.Persistence.Repository;
 using AssistantHytale.Persistence.Repository.Interface;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +30,8 @@ namespace AssistantHytale.Data.Helper
             services.AddTransient<IUserRepository, UserRepository>();
 
             // Integration Repositories
-            //services.AddTransient<IStreamNewsScrapeRepository, StreamNewsScrapeRepository>();
-            //services.AddTransient<IGithubRepository, GithubRepository>();
+            services.AddTransient<IHytaleBlogRepository, HytaleBlogRepository>();
+            services.AddTransient<IGithubRepository, GithubRepository>();
 
             // Services
             services.AddTransient<IUserService, UserService>();

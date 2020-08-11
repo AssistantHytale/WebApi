@@ -1,0 +1,61 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using AssistantHytale.Domain.Dto.ViewModel;
+using AssistantHytale.Domain.Dto.ViewModel.Blog;
+using AssistantHytale.Integration.Entity;
+
+namespace AssistantHytale.Integration.Mapper
+{
+    public static class HytaleBlogPostMapper
+    {
+        public static HytaleBlogPostItemViewModel ToDto(this HytaleBlogPostEntity entity)
+        {
+            HytaleBlogPostItemViewModel vm = new HytaleBlogPostItemViewModel
+            {
+                Author = entity.Author,
+                BodyExcerpt = entity.BodyExcerpt,
+                CreatedAt = entity.CreatedAt,
+                Featured = entity.Featured,
+                PublishedAt = entity.PublishedAt,
+                Slug = entity.Slug,
+                Title = entity.Title,
+                ThumbnailImageUrl = GetImageUrl(entity.CoverImage, "thumb"),
+                CoverImageUrl = GetImageUrl(entity.CoverImage, "cover")
+            };
+            return vm;
+        }
+        public static List<HytaleBlogPostItemViewModel> ToDto(this List<HytaleBlogPostEntity> entity) =>
+            entity.Select(d => d.ToDto()).ToList();
+
+        public static string GetImageUrl(this HytaleBlogPostCoverImage entity, string containsText)
+        {
+            foreach (string entityVariant in entity.Variants)
+            {
+                if (entityVariant.Contains(containsText))
+                {
+                    return $"https://cdn.hytale.com/variants/{entityVariant}_{entity.S3Key}";
+                }
+            }
+            return string.Empty;
+        }
+
+        public static HytaleBlogPostDetailViewModel ToDto(this HytaleBlogPostDetailEntity entity)
+        {
+            HytaleBlogPostDetailViewModel vm = new HytaleBlogPostDetailViewModel
+            {
+                Author = entity.Author,
+                Body = entity.Body,
+                CreatedAt = entity.CreatedAt,
+                Featured = entity.Featured,
+                PublishedAt = entity.PublishedAt,
+                Slug = entity.Slug,
+                Title = entity.Title,
+                ThumbnailImageUrl = GetImageUrl(entity.CoverImage, "thumb"),
+                CoverImageUrl = GetImageUrl(entity.CoverImage, "cover"),
+                NextPostSlug = entity?.Next?.Slug ?? string.Empty,
+                PreviousPostSlug = entity?.Previous?.Slug ?? string.Empty
+            };
+            return vm;
+        }
+    }
+}

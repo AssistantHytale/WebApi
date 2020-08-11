@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AssistantHytale.Domain\AssistantHytale.Domain.csproj" />
+    <ProjectReference Include="..\AssistantHytale.Integration\AssistantHytale.Integration.csproj" />
     <ProjectReference Include="..\AssistantHytale.Persistence\AssistantHytale.Persistence.csproj" />
   </ItemGroup>
 
