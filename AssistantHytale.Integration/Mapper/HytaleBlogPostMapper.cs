@@ -18,6 +18,7 @@ namespace AssistantHytale.Integration.Mapper
                 PublishedAt = entity.PublishedAt,
                 Slug = entity.Slug,
                 Title = entity.Title,
+                Link = $"https://www.hytale.com/news/{entity.CreatedAt.Year}/{entity.CreatedAt.Month}/{entity.Slug}",
                 ThumbnailImageUrl = GetImageUrl(entity.CoverImage, "thumb"),
                 CoverImageUrl = GetImageUrl(entity.CoverImage, "cover")
             };

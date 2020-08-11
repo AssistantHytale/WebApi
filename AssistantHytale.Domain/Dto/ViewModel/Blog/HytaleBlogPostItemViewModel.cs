@@ -14,5 +14,6 @@ namespace AssistantHytale.Domain.Dto.ViewModel.Blog
         public string ThumbnailImageUrl { get; set; }
         public string CoverImageUrl { get; set; }
         public string BodyExcerpt { get; set; }
+        public string Link { get; set; }
     }
 }
