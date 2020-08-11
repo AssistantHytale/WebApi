@@ -61,16 +61,6 @@ namespace AssistantHytale.Api.Controllers
         }
 
         /// <summary>
-        /// Login
-        /// </summary>
-        [HttpGet]
-        [Route("/signin-google")]
-        public IActionResult SigninGoogle()
-        {
-            return Ok();
-        }
-
-        /// <summary>
         /// Logout
         /// </summary>
         [HttpGet]

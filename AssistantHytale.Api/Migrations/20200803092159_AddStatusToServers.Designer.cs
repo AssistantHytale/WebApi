@@ -4,14 +4,16 @@ using AssistantHytale.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AssistantHytale.Api.Migrations
 {
     [DbContext(typeof(HytaleAssistantContext))]
-    partial class HytaleAssistantContextModelSnapshot : ModelSnapshot
+    [Migration("20200803092159_AddStatusToServers")]
+    partial class AddStatusToServers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,109 +49,6 @@ namespace AssistantHytale.Api.Migrations
                     b.HasKey("Guid");
 
                     b.ToTable("Contributors");
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideContent", b =>
-                {
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("GuideContents");
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideDetail", b =>
-                {
-                    b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Minutes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShortTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tags")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Translator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("GuideDetails");
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideMeta", b =>
-                {
-                    b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("ShowCreatedByUser")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<Guid>("UserGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Views")
-                        .HasColumnType("int");
-
-                    b.HasKey("Guid");
-
-                    b.HasIndex("UserGuid");
-
-                    b.ToTable("GuideMetas");
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideMetaGuideDetail", b =>
-                {
-                    b.Property<Guid>("GuideMetaGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GuideDetailGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("LanguageType")
-                        .HasColumnType("int");
-
-                    b.HasKey("GuideMetaGuid", "GuideDetailGuid", "LanguageType");
-
-                    b.HasIndex("GuideDetailGuid");
-
-                    b.ToTable("GuideMetaGuideDetails");
                 });
 
             modelBuilder.Entity("AssistantHytale.Persistence.Entity.Permission", b =>
@@ -235,7 +134,7 @@ namespace AssistantHytale.Api.Migrations
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
-                    b.Property<DateTime>("CreateDateTime")
+                    b.Property<DateTime>("CreatDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -336,11 +235,6 @@ namespace AssistantHytale.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
                     b.Property<string>("EmailHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -361,8 +255,7 @@ namespace AssistantHytale.Api.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Guid");
 
@@ -382,43 +275,6 @@ namespace AssistantHytale.Api.Migrations
                     b.HasIndex("PermissionType");
 
                     b.ToTable("UserPermission");
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideContent", b =>
-                {
-                    b.HasOne("AssistantHytale.Persistence.Entity.GuideDetail", "GuideDetail")
-                        .WithMany("GuideContents")
-                        .HasForeignKey("Guid")
-                        .HasConstraintName("ForeignKey_Content_GuideDetails")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideMeta", b =>
-                {
-                    b.HasOne("AssistantHytale.Persistence.Entity.User", "User")
-                        .WithMany("GuideMetas")
-                        .HasForeignKey("UserGuid")
-                        .HasConstraintName("ForeignKey_User_GuideMetas")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AssistantHytale.Persistence.Entity.GuideMetaGuideDetail", b =>
-                {
-                    b.HasOne("AssistantHytale.Persistence.Entity.GuideDetail", "GuideDetail")
-                        .WithMany("GuideMetaGuideDetails")
-                        .HasForeignKey("GuideDetailGuid")
-                        .HasConstraintName("ForeignKey_GuideMetaGuideDetails_GuideDetails")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AssistantHytale.Persistence.Entity.GuideMeta", "GuideMeta")
-                        .WithMany("GuideMetaGuideDetails")
-                        .HasForeignKey("GuideMetaGuid")
-                        .HasConstraintName("ForeignKey_GuideMetaGuideDetails_GuideMetas")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("AssistantHytale.Persistence.Entity.UserPermission", b =>

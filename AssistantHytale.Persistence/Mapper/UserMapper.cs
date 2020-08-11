@@ -16,6 +16,7 @@ namespace AssistantHytale.Persistence.Mapper
                 Username = oAuth.Username,
                 OAuthUserId = oAuth.OAuthUserId,
                 EmailHash = emailHash,
+                Email = oAuth.Email,
                 JoinDate = DateTime.Now,
                 ProfileImageUrl = string.IsNullOrEmpty(oAuth.ProfileUrl)
                     ? UserConstants.DefaultProfileUrl(oAuth.Username)
