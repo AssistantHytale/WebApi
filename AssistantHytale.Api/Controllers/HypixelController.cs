@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssistantHytale.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class HypixelController : ControllerBase
     {
@@ -26,21 +26,25 @@ namespace AssistantHytale.Api.Controllers
         /// <summary>
         /// Get Published blogs from https://www.hytale.com/news
         /// </summary>
+        /// <param name="page"></param>
         [HttpGet("Blog")]
-        [CacheFilter(CacheType.PublishedBlogPosts)]
-        public async Task<ActionResult<List<HytaleBlogPostItemViewModel>>> GetBlogPosts()
+        [HttpGet("Blog/{page}")]
+        [CacheFilter(CacheType.PublishedBlogPosts, includeUrl: true)]
+        public async Task<ActionResult<List<HytaleBlogPostItemViewModel>>> GetBlogPosts(int page = 1)
         {
-            ResultWithValue<List<HytaleBlogPostEntity>> blogPostResult = await _hytaleRepo.GetPublishedBlogPosts(0);
+            PaginationResultWithValue<List<HytaleBlogPostEntity>> blogPostResult = await _hytaleRepo.GetPublishedBlogPosts(page);
             if (blogPostResult.HasFailed) return BadRequest("Could not fetch Blog Posts");
 
-            return Ok(blogPostResult.Value.ToDto());
+            return Ok(new PaginationResultWithValue<List<HytaleBlogPostItemViewModel>>(true, blogPostResult.Value.ToDto(), 
+                blogPostResult.CurrentPage, blogPostResult.TotalPages, string.Empty)
+            );
         }
 
         /// <summary>
         /// Get Published blog content from slug
         /// </summary>
         /// <param name="slug"></param>
-        [HttpGet("Blog/{slug}")]
+        [HttpGet("BlogDetail/{slug}")]
         [CacheFilter(CacheType.PublishedBlogPosts, includeUrl: true)]
         public async Task<ActionResult<HytaleBlogPostDetailViewModel>> GetBlogPostDetails(string slug)
         {

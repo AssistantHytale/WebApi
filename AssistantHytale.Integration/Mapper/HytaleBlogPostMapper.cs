@@ -29,6 +29,12 @@ namespace AssistantHytale.Integration.Mapper
 
         public static string GetImageUrl(this HytaleBlogPostCoverImage entity, string containsText)
         {
+            if (entity == null) return string.Empty;
+            if (entity.Variants.Length == 0)
+            {
+                if (containsText.Contains("thumb")) return $"https://cdn.hytale.com/variants/blog_thumb_{entity.S3Key}";
+                if (containsText.Contains("cover")) return $"https://cdn.hytale.com/variants/blog_cover_{entity.S3Key}";
+            }
             foreach (string entityVariant in entity.Variants)
             {
                 if (entityVariant.Contains(containsText))
