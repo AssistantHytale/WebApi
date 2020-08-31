@@ -8,8 +8,8 @@ namespace AssistantHytale.Persistence.Repository.Interface
 {
     public interface IPermissionRepository
     {
-        Task<ResultWithValue<List<PermissionType>>> GetPermissionsForUserId(Guid guid);
-        Task<Result> AddPermissionToUser(Guid guid, PermissionType permission);
-        Task<Result> DeletePermissionFromUser(Guid guid, PermissionType permission);
+        Task<ResultWithValue<List<PermissionType>>> GetPermissionsForUserId(Guid userGuid);
+        Task<Result> AddPermissionsForUserId(Guid userGuid, PermissionType permission);
+        Task<Result> DeletePermissionsForUserId(Guid userGuid, PermissionType permission);
     }
 }

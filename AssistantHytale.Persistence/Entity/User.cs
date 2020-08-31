@@ -34,11 +34,11 @@ namespace AssistantHytale.Persistence.Entity
         [Required]
         public DateTime JoinDate { get; set; }
 
-        public virtual ICollection<GuideMeta> GuideMetas { get; set; }
 
         #region Relationships
-
+        public virtual ICollection<GuideDetail> GuideDetails { get; set; }
         public virtual ICollection<UserPermission> Permissions { get; set; }
+        public virtual ICollection<Server> Servers { get; set; }
 
         public static void MapRelationships(ModelBuilder modelBuilder)
         {

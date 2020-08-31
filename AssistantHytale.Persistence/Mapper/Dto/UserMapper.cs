@@ -3,7 +3,7 @@ using AssistantHytale.Domain.Constants;
 using AssistantHytale.Domain.Contract;
 using AssistantHytale.Persistence.Entity;
 
-namespace AssistantHytale.Persistence.Mapper
+namespace AssistantHytale.Persistence.Mapper.Dto
 {
     public static class UserMapper
     {

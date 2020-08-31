@@ -29,6 +29,12 @@ namespace AssistantHytale.Persistence.Entity
         public string Banner { get; set; }
 
         [Required]
+        public bool ShowCreatedByUser { get; set; }
+
+        [Required]
+        public Guid UserGuid { get; set; }
+
+        [Required]
         [MaxLength(50)]
         public string Address { get; set; }
 
@@ -82,10 +88,18 @@ namespace AssistantHytale.Persistence.Entity
 
 
         #region Relationships
+        public virtual User User { get; set; }
 
         public static void MapRelationships(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Server>().HasKey(p => p.Guid);
+            modelBuilder.Entity<Server>()
+                .HasOne(up => up.User)
+                .WithMany(b => b.Servers)
+                .HasForeignKey(up => up.UserGuid)
+                .HasConstraintName("ForeignKey_User_Servers")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
         #endregion
     }

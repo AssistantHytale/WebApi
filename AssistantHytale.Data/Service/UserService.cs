@@ -6,6 +6,7 @@ using AssistantHytale.Domain.Contract;
 using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Entity;
 using AssistantHytale.Persistence.Mapper;
+using AssistantHytale.Persistence.Mapper.Dto;
 using AssistantHytale.Persistence.Repository.Interface;
 
 namespace AssistantHytale.Data.Service
@@ -29,7 +30,7 @@ namespace AssistantHytale.Data.Service
             if (getUserResult.IsSuccess) return _jwtRepo.GenerateToken(getUserResult.Value.Username, getUserResult.Value.Guid);
 
             User newUser = domain.ToPersistence(new Guid(), emailHash);
-            Result createUserResult = await _userRepo.CreateUser(newUser);
+            Result createUserResult = await _userRepo.Add(newUser);
             if (createUserResult.IsSuccess) return _jwtRepo.GenerateToken(newUser.Username, newUser.Guid);
 
             return new ResultWithValue<string>(false, string.Empty, "Could not generate JWT for user");

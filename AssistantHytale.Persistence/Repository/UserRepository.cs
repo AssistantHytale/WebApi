@@ -18,7 +18,7 @@ namespace AssistantHytale.Persistence.Repository
             _db = db;
         }
 
-        public async Task<ResultWithValue<List<User>>> GetUsers()
+        public async Task<ResultWithValue<List<User>>> GetAll()
         {
             try
             {
@@ -31,7 +31,7 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<ResultWithValue<User>> GetUser(Guid guid)
+        public async Task<ResultWithValue<User>> Get(Guid guid)
         {
             try
             {
@@ -75,14 +75,14 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> CreateUser(User user)
+        public async Task<Result> Add(User addItem)
         {
-            bool usernameExistsResult = await _db.Users.AnyAsync(u => u.Username.Equals(user.Username));
+            bool usernameExistsResult = await _db.Users.AnyAsync(u => u.Username.Equals(addItem.Username));
             if (usernameExistsResult) return new Result(false, "Username exists in database");
 
             try
             {
-                await _db.Users.AddAsync(user);
+                await _db.Users.AddAsync(addItem);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }
@@ -92,12 +92,12 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> EditUser(User user)
+        public async Task<Result> Edit(User editItem)
         {
-            User userToEdit = await _db.Users.FirstAsync(u => u.Guid.Equals(user.Guid));
+            User userToEdit = await _db.Users.FirstAsync(u => u.Guid.Equals(editItem.Guid));
             if (userToEdit == null) return new Result(false, "User does not exist in database");
 
-            userToEdit.Username = user.Username;
+            userToEdit.Username = editItem.Username;
 
             try
             {
@@ -111,7 +111,7 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> DeleteUser(Guid userGuid)
+        public async Task<Result> Delete(Guid userGuid)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace AssistantHytale.Persistence.Repository
                 if (userToDelete == null) return new Result(false, "User does not exist in database");
 
                 _db.Users.Remove(userToDelete);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
 
                 return new Result(true, string.Empty);
             }

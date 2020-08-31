@@ -17,7 +17,6 @@ namespace AssistantHytale.Persistence.Entity
         #region Relationships
 
         public virtual User User { get; set; }
-        public virtual Permission Permission { get; set; }
 
         public static void MapRelationships(ModelBuilder modelBuilder)
         {
@@ -27,12 +26,9 @@ namespace AssistantHytale.Persistence.Entity
                 .HasOne(up => up.User)
                 .WithMany(b => b.Permissions)
                 .HasForeignKey(up => up.UserGuid)
-                .HasConstraintName("ForeignKey_UserPermissions_Users");
-            modelBuilder.Entity<UserPermission>()
-                .HasOne(up => up.Permission)
-                .WithMany(c => c.UserPermissions)
-                .HasForeignKey(bc => bc.PermissionType)
-                .HasConstraintName("ForeignKey_UserPermissions_Permissions");
+                .HasConstraintName("ForeignKey_UserPermissions_Users")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
         #endregion
     }

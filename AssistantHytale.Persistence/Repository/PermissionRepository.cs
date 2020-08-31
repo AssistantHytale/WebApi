@@ -19,11 +19,11 @@ namespace AssistantHytale.Persistence.Repository
             _db = db;
         }
 
-        public async Task<ResultWithValue<List<PermissionType>>> GetPermissionsForUserId(Guid guid)
+        public async Task<ResultWithValue<List<PermissionType>>> GetPermissionsForUserId(Guid userGuid)
         {
             try
             {
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Guid.Equals(guid));
+                User user = await _db.Users.FirstOrDefaultAsync(u => u.Guid.Equals(userGuid));
                 if (user == null)
                 {
                     return new ResultWithValue<List<PermissionType>>(false, new List<PermissionType>(), "User not found");
@@ -36,19 +36,16 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> AddPermissionToUser(Guid guid, PermissionType permission)
+        public async Task<Result> AddPermissionsForUserId(Guid userGuid, PermissionType permission)
         {
             try
             {
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Guid.Equals(guid));
-                if (user == null)
-                {
-                    return new ResultWithValue<List<PermissionType>>(false, new List<PermissionType>(), "User not found");
-                }
+                User user = await _db.Users.FirstOrDefaultAsync(u => u.Guid.Equals(userGuid));
+                if (user == null) return new Result(false, "User not found");
 
                 user.Permissions.Add(new UserPermission
                 {
-                    UserGuid = guid,
+                    UserGuid = userGuid,
                     PermissionType = permission,
                 });
 
@@ -62,20 +59,17 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> DeletePermissionFromUser(Guid guid, PermissionType permission)
+        public async Task<Result> DeletePermissionsForUserId(Guid userGuid, PermissionType permission)
         {
             try
             {
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Guid.Equals(guid));
-                if (user == null)
-                {
-                    return new ResultWithValue<List<PermissionType>>(false, new List<PermissionType>(), "User not found");
-                }
+                UserPermission toDelete = await _db.UserPermissions
+                    .Where(up => up.UserGuid.Equals(userGuid))
+                    .Where(up => up.PermissionType.Equals(permission))
+                    .FirstOrDefaultAsync();
+                if (toDelete == null) return new Result(false, "Permission not assigned to User, cannot delete");
 
-                List<UserPermission> userPermissions = user.Permissions.ToList();
-                userPermissions.RemoveAll(up => up.PermissionType == permission && up.UserGuid.Equals(guid));
-                user.Permissions = userPermissions;
-
+                _db.UserPermissions.Remove(toDelete);
                 await _db.SaveChangesAsync();
 
                 return new Result(true, string.Empty);

@@ -20,7 +20,7 @@ namespace AssistantHytale.Persistence.Repository
             _db = db;
         }
 
-        public async Task<ResultWithValue<List<Setting>>> GetAllSettings()
+        public async Task<ResultWithValue<List<Setting>>> GetAll()
         {
             try
             {
@@ -31,6 +31,11 @@ namespace AssistantHytale.Persistence.Repository
             {
                 return new ResultWithValue<List<Setting>>(false, new List<Setting>(), ex.Message);
             }
+        }
+
+        public Task<ResultWithValue<Setting>> Get(Guid guid)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<ResultWithValue<List<Setting>>> GetAllSettings(SettingType settingType)
@@ -84,11 +89,11 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> AddSetting(Setting addSetting)
+        public async Task<Result> Add(Setting addItem)
         {
             try
             {
-                await _db.Settings.AddAsync(addSetting);
+                await _db.Settings.AddAsync(addItem);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }
@@ -98,11 +103,11 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> EditSetting(Setting editSetting)
+        public async Task<Result> Edit(Setting editItem)
         {
             try
             {
-                _db.Settings.Update(editSetting);
+                _db.Settings.Update(editItem);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }
@@ -112,14 +117,14 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> DeleteSetting(Guid guid)
+        public async Task<Result> Delete(Guid guid)
         {
             try
             {
-                Setting settingToDelete = await _db.Settings.FirstAsync(d => d.Guid.Equals(guid));
-                if (settingToDelete == null) return new Result(false, "Could not find the specified Guid");
+                Setting toDelete = await _db.Settings.FirstAsync(d => d.Guid.Equals(guid));
+                if (toDelete == null) return new Result(false, "Could not find the specified Guid");
 
-                _db.Settings.Remove(settingToDelete);
+                _db.Settings.Remove(toDelete);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }

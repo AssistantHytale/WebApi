@@ -30,7 +30,9 @@ namespace AssistantHytale.Persistence.Entity
                 .HasOne(up => up.GuideDetail)
                 .WithMany(b => b.GuideContents)
                 .HasForeignKey(up => up.Guid)
-                .HasConstraintName("ForeignKey_Content_GuideDetails");
+                .HasConstraintName("ForeignKey_Content_GuideDetails")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
         #endregion
     }

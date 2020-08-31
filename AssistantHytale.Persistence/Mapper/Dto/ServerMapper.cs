@@ -3,7 +3,7 @@ using System.Linq;
 using AssistantHytale.Domain.Dto.ViewModel.Server;
 using AssistantHytale.Persistence.Entity;
 
-namespace AssistantHytale.Persistence.Mapper
+namespace AssistantHytale.Persistence.Mapper.Dto
 {
     public static class ServerMapper
     {

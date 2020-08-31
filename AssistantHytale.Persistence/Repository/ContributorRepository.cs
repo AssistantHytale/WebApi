@@ -18,7 +18,7 @@ namespace AssistantHytale.Persistence.Repository
             _db = db;
         }
 
-        public async Task<ResultWithValue<List<Contributor>>> GetAllContributors()
+        public async Task<ResultWithValue<List<Contributor>>> GetAll()
         {
             List<Contributor> contributors = await _db.Contributors.OrderBy(f => f.SortRank).ToListAsync();
             if (contributors == null) return new ResultWithValue<List<Contributor>>(false, new List<Contributor>(), "Could not load Contributors");
@@ -26,11 +26,16 @@ namespace AssistantHytale.Persistence.Repository
             return new ResultWithValue<List<Contributor>>(true, contributors, string.Empty);
         }
 
-        public async Task<Result> AddContributor(Contributor addContributor)
+        public Task<ResultWithValue<Contributor>> Get(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Result> Add(Contributor addItem)
         {
             try
             {
-                await _db.Contributors.AddAsync(addContributor);
+                await _db.Contributors.AddAsync(addItem);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }
@@ -40,11 +45,11 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> EditContributor(Contributor editContributor)
+        public async Task<Result> Edit(Contributor editItem)
         {
             try
             {
-                _db.Contributors.Update(editContributor);
+                _db.Contributors.Update(editItem);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }
@@ -54,14 +59,14 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<Result> DeleteContributor(Guid guid)
+        public async Task<Result> Delete(Guid guid)
         {
             try
             {
-                Contributor toContributor = await _db.Contributors.FirstAsync(d => d.Guid.Equals(guid));
-                if (toContributor == null) return new Result(false, "Could not find the specified Guid");
+                Contributor toDelete = await _db.Contributors.FirstAsync(d => d.Guid.Equals(guid));
+                if (toDelete == null) return new Result(false, "Could not find the specified Guid");
 
-                _db.Contributors.Remove(toContributor);
+                _db.Contributors.Remove(toDelete);
                 await _db.SaveChangesAsync();
                 return new Result(true, string.Empty);
             }

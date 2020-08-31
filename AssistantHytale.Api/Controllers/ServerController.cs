@@ -5,6 +5,7 @@ using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Entity;
 using AssistantHytale.Persistence.Repository.Interface;
 using AssistantHytale.Persistence.Mapper;
+using AssistantHytale.Persistence.Mapper.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

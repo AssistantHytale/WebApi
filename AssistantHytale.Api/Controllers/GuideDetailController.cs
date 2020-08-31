@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AssistantHytale.Domain.Dto.Enum;
 using AssistantHytale.Domain.Dto.ViewModel.Guide;
 using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Entity;
+using AssistantHytale.Persistence.Mapper.Dto;
 using AssistantHytale.Persistence.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,17 +25,16 @@ namespace AssistantHytale.Api.Controllers
         /// <summary>
         /// Get All Guides that are active Details.
         /// </summary>
-        /// <param name="lang">
-        /// The desired Language.
+        /// <param name="langCode">
+        /// The desired Language code.
         /// </param>
         [HttpGet]
-        public async Task<ActionResult<List<GuideDetailViewModel>>> GetAllActiveGuideDetails(LanguageType lang = LanguageType.English)
+        public async Task<ActionResult<List<GuideDetailViewModel>>> GetAllActiveGuideDetails(string langCode = "en")
         {
-            ResultWithValue<List<GuideDetail>> allGuideDetails = await _guideRepo.GetActiveGuideDetails(lang);
+            ResultWithValue<List<GuideDetail>> allGuideDetails = await _guideRepo.GetActiveGuideDetails(langCode);
             if (allGuideDetails.HasFailed || allGuideDetails.Value.Count == 0) return NoContent();
 
-            //return Ok(allGuideDetails.Value.ToViewModel());
-            return Ok();
+            return Ok(allGuideDetails.Value.ToDto(db => db.ToDto()));
         }
 
         /// <summary>
@@ -44,17 +43,13 @@ namespace AssistantHytale.Api.Controllers
         /// <param name="guid">
         /// GuideMeta Guid, available from /GuideMeta.
         /// </param>
-        /// <param name="lang">
-        /// The desired Language.
-        /// </param>  
         [HttpGet("{guid}")]
-        public async Task<ActionResult<GuideDetailViewModel>> GetGuideDetails(Guid guid, LanguageType lang = LanguageType.English)
+        public async Task<ActionResult<GuideDetailViewModel>> GetGuideDetails(Guid guid)
         {
-            ResultWithValue<GuideDetail> guideDetailsResult = await _guideRepo.GetGuideDetail(guid, lang);
+            ResultWithValue<GuideDetail> guideDetailsResult = await _guideRepo.Get(guid);
             if (guideDetailsResult.HasFailed) return new GuideDetailViewModel();
 
-            //return Ok(guideDetailsResult.Value.ToViewModel());
-            return Ok();
+            return Ok(guideDetailsResult.Value.ToDto());
         }
     }
 }
