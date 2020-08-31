@@ -7,9 +7,9 @@ namespace AssistantHytale.Api.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            string guideSchemaSql = SqlFileHelper.GetSqlFileContentFromStoredProceduresFolder("CreateGuideSchema.sql");
+            string guideSchemaSql = SqlFileHelper.GetSqlFileContentFromStoredProceduresFolder("01 - CreateGuideSchema.sql");
             migrationBuilder.Sql(guideSchemaSql);
-            string sql = SqlFileHelper.GetSqlFileContentFromStoredProceduresFolder("GetActiveGuidesPaged.sql");
+            string sql = SqlFileHelper.GetSqlFileContentFromStoredProceduresFolder("02 - GetActiveGuidesPaged.sql");
             migrationBuilder.Sql(sql);
         }
 
