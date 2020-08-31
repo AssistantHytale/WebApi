@@ -10,31 +10,33 @@ namespace AssistantHytale.Integration.Repository
 {
     public class HytaleBlogRepository : BaseExternalApiRepository, IHytaleBlogRepository
     {
-        private int _pageSize = 10;
-        private readonly string _baseUrl = "https://hytale.com/api";
-        private readonly string _publishedBlogsUrl = "/blog/post/published";
-        private readonly string _specificPublishedBlogUrl = "/blog/post/slug/";
+        private const int PageSize = 10;
+        private const string BaseUrl = "https://hytale.com/api";
+        private const string PublishedBlogsUrl = "/blog/post/published";
+        private const string SpecificPublishedBlogUrl = "/blog/post/slug/";
 
-        public async Task<PaginationResultWithValue<List<HytaleBlogPostEntity>>> GetPublishedBlogPosts(int page)
+        public async Task<ResultWithValueAndPagination<List<HytaleBlogPostEntity>>> GetPublishedBlogPosts(int page)
         {
-            ResultWithValue<List<HytaleBlogPostEntity>> blogPostsResult = await Get<List<HytaleBlogPostEntity>>($"{_baseUrl}{_publishedBlogsUrl}");
+            ResultWithValue<List<HytaleBlogPostEntity>> blogPostsResult = await Get<List<HytaleBlogPostEntity>>($"{BaseUrl}{PublishedBlogsUrl}");
 
-            if (blogPostsResult.HasFailed) return new PaginationResultWithValue<List<HytaleBlogPostEntity>>(false, new List<HytaleBlogPostEntity>(), 
-                0, 0, blogPostsResult.ExceptionMessage
+            if (blogPostsResult.HasFailed) return new ResultWithValueAndPagination<List<HytaleBlogPostEntity>>(false, new List<HytaleBlogPostEntity>(), 
+                0, 0, 0, blogPostsResult.ExceptionMessage
             );
             
-            int totalPages = (int)Math.Ceiling((double)blogPostsResult.Value.Count / _pageSize);
+            int totalPages = (int)Math.Ceiling((double)blogPostsResult.Value.Count / PageSize);
 
             if (page < 1) page = 1;
             if (page > totalPages) page = totalPages;
 
-            List<HytaleBlogPostEntity> list = blogPostsResult.Value.Skip((page - 1) * _pageSize).Take(_pageSize).ToList();
-            return new PaginationResultWithValue<List<HytaleBlogPostEntity>>(true, list, page, totalPages, string.Empty);
+            List<HytaleBlogPostEntity> list = blogPostsResult.Value.Skip((page - 1) * PageSize).Take(PageSize).ToList();
+            return new ResultWithValueAndPagination<List<HytaleBlogPostEntity>>(true, list, 
+                page, totalPages, blogPostsResult.Value.Count, 
+            string.Empty);
         }
 
         public async Task<ResultWithValue<HytaleBlogPostDetailEntity>> GetPublishedBlogPost(string slug)
         {
-            ResultWithValue<HytaleBlogPostDetailEntity> blogPostResult = await Get<HytaleBlogPostDetailEntity>($"{_baseUrl}{_specificPublishedBlogUrl}{slug}");
+            ResultWithValue<HytaleBlogPostDetailEntity> blogPostResult = await Get<HytaleBlogPostDetailEntity>($"{BaseUrl}{SpecificPublishedBlogUrl}{slug}");
 
             if (blogPostResult.HasFailed) return new ResultWithValue<HytaleBlogPostDetailEntity>(false, new HytaleBlogPostDetailEntity(), blogPostResult.ExceptionMessage);
 

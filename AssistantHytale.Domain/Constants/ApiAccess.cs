@@ -11,7 +11,7 @@ namespace AssistantHytale.Domain.Constants
         public static List<string> PublicControllers = new List<string>
         {
             "About",
-            "Steam",
+            "Hypixel",
             "Version"
         };
     }

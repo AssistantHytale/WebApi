@@ -24,6 +24,9 @@ namespace AssistantHytale.Api.Controllers
         /// <summary>
         /// OAuth Login
         /// </summary>
+        /// <returns>JWT Token to be used for future authentication</returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad details were passed and login could not be completed</response>
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] OAuthUserViewModel oauthVm)

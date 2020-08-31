@@ -13,4 +13,12 @@ namespace AssistantHytale.Persistence.Repository.Interface
         Task<Result> Edit(T editItem);
         Task<Result> Delete(Guid guid);
     }
+    public interface IBasePaginatedRepository<T>
+    {
+        Task<ResultWithValueAndPagination<List<T>>> GetAll(int page);
+        Task<ResultWithValue<T>> Get(Guid guid);
+        Task<Result> Add(T addItem);
+        Task<Result> Edit(T editItem);
+        Task<Result> Delete(Guid guid);
+    }
 }

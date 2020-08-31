@@ -2,6 +2,6 @@
 {
     public static class StoredProcedure
     {
-        public static string GuideDetailsWithUserInfo = "";
+        public static string GuideDetailsWithUserInfo = "[guide].[GetActiveGuidesPaged]";
     }
 }

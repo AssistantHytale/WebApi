@@ -13,6 +13,7 @@ namespace AssistantHytale.Api.Controllers
         /// <summary>
         /// Get some basic info on the Assistant for Hytale Apps
         /// </summary>
+        /// <returns>Basic info about the Assistant for Hytale Apps</returns>
         [HttpGet]
         [CacheFilter(CacheType.About)]
         public IActionResult About()

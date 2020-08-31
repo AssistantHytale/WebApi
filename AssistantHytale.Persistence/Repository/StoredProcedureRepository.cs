@@ -84,7 +84,7 @@ namespace AssistantHytale.Persistence.Repository
 
             try
             {
-                SqlCommand command = new SqlCommand(query, conn);
+                SqlCommand command = new SqlCommand(query, conn) { CommandType = CommandType.StoredProcedure };
                 sqlCommand?.Invoke(command);
                 foreach (StoredProcedureParameter param in parameters ?? new List<StoredProcedureParameter>())
                 {

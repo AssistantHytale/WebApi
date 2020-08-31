@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using AssistantHytale.Domain.Dto.Enum;
+using AssistantHytale.Domain.Contract;
 using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Constant;
 using AssistantHytale.Persistence.Contract;
@@ -22,46 +22,39 @@ namespace AssistantHytale.Persistence.Repository
             _db = db;
         }
 
-        public async Task<ResultWithValue<List<GuideDetail>>> GetAll()
+        public Task<ResultWithValueAndPagination<List<GuideDetail>>> GetAll(int page)
         {
-            List<GuideDetail> guideDetails = await _db.GuideDetails.ToListAsync();
-            if (guideDetails == null || !guideDetails.Any()) return new ResultWithValue<List<GuideDetail>>(false, new List<GuideDetail>(), "Could not load GuideDetails");
-
-            return new ResultWithValue<List<GuideDetail>>(true, guideDetails, string.Empty);
+            throw new NotImplementedException();
         }
 
-        public async Task<ResultWithValueAndPagination<List<GuideDetail>>> GetActiveGuideDetails()
-        {
-            List<GuideDetail> guideDetails = await _db.GuideDetails
-                .Where(gd => gd.Status == AdminApprovalStatus.Approved)
-                .ToListAsync();
-            if (guideDetails == null || !guideDetails.Any()) return new ResultWithValueAndPagination<List<GuideDetail>>(false, new List<GuideDetail>(), 0, 0, "Could not load GuideDetails");
+        public async Task<ResultWithValueAndPagination<List<GuideDetailsWithUserInfo>>> GetActiveGuideDetails(int page) => await GetActiveGuideDetails(page, string.Empty);
 
-            var storedProcResult = await StoredProcedureRepository.Execute(_db, 
+        public async Task<ResultWithValueAndPagination<List<GuideDetailsWithUserInfo>>> GetActiveGuideDetails(int page, string lang)
+        {
+            Pagination pagination = new Pagination();
+            List<GuideDetailsWithUserInfo> guideDetails = new List<GuideDetailsWithUserInfo>();
+
+            Result storedProcResult = await StoredProcedureRepository.Execute(_db,
                 StoredProcedure.GuideDetailsWithUserInfo,
                 new List<StoredProcedureParameter>
                 {
-                    StoredProcedureParameter.StringParam("@test", "test"),
+                    StoredProcedureParameter.IntParam("@page", 1),
+                    StoredProcedureParameter.IntParam("@pageSize", 20),
+                    StoredProcedureParameter.StringParam("@langCode", lang),
                 },
-                (DataSet reader) =>
+                dbDataSetReader: dataSet =>
                 {
+                    pagination = Pagination.FromDataRow(dataSet.Tables[0].Rows[0]);
 
+                    DataTable resultsTable = dataSet.Tables[1];
+                    foreach (DataRow row in resultsTable.Rows)
+                    {
+                        guideDetails.Add(GuideDetailsWithUserInfo.FromDataRow(row));
+                    }
                 }
             );
 
-            return new ResultWithValueAndPagination<List<GuideDetail>>(true, guideDetails, 0, 0, string.Empty);
-        }
-
-        public async Task<ResultWithValueAndPagination<List<GuideDetail>>> GetActiveGuideDetails(string lang)
-        {
-            List<GuideDetail> guideDetails = await _db.GuideDetails
-                .Where(gd => gd.Status == AdminApprovalStatus.Approved)
-                .Where(gd => gd.LanguageCode == lang)
-                .ToListAsync();
-
-            if (guideDetails == null || !guideDetails.Any()) return new ResultWithValueAndPagination<List<GuideDetail>>(false, new List<GuideDetail>(), 0, 0, "Could not load GuideDetails");
-
-            return new ResultWithValueAndPagination<List<GuideDetail>>(true, guideDetails, 0, 0, string.Empty);
+            return storedProcResult.PaginationFromResult(guideDetails, pagination);
         }
 
         public async Task<ResultWithValue<GuideDetail>> Get(Guid guid)

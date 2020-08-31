@@ -21,17 +21,6 @@ namespace AssistantHytale.Persistence.Repository
             _pageSize = 20;
         }
 
-        public async Task<ResultWithValue<List<Server>>> GetAll()
-        {
-            List<Server> servers = await _db.Servers
-                .Where(s => s.ApprovalStatus == AdminApprovalStatus.Approved)
-                .OrderBy(f => f.CreateDateTime)
-                .ToListAsync();
-            if (servers == null) return new ResultWithValueAndPagination<List<Server>>(false, new List<Server>(), 0, 0, "Could not load Servers");
-
-            return new ResultWithValue<List<Server>>(true, servers, string.Empty);
-        }
-
         public async Task<ResultWithValueAndPagination<List<Server>>> GetAll(int page)
         {
             List<Server> servers = await _db.Servers
@@ -40,9 +29,9 @@ namespace AssistantHytale.Persistence.Repository
                 .Skip(page * _pageSize)
                 .Take(20)
                 .ToListAsync();
-            if (servers == null) return new ResultWithValueAndPagination<List<Server>>(false, new List<Server>(), 0, 0, "Could not load Servers");
-
-            return new ResultWithValueAndPagination<List<Server>>(true, servers, page, 0, string.Empty);
+            if (servers == null) return new ResultWithValueAndPagination<List<Server>>(false, new List<Server>(), 0, 0,0, "Could not load Servers");
+            // TODO Pagination
+            return new ResultWithValueAndPagination<List<Server>>(true, servers, page, 0, 0, string.Empty);
         }
 
         public async Task<ResultWithValue<Server>> Get(Guid guid)

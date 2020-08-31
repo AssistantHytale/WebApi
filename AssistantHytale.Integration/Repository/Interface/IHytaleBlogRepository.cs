@@ -7,7 +7,7 @@ namespace AssistantHytale.Integration.Repository.Interface
 {
     public interface IHytaleBlogRepository
     {
-        Task<PaginationResultWithValue<List<HytaleBlogPostEntity>>> GetPublishedBlogPosts(int page);
+        Task<ResultWithValueAndPagination<List<HytaleBlogPostEntity>>> GetPublishedBlogPosts(int page);
         Task<ResultWithValue<HytaleBlogPostDetailEntity>> GetPublishedBlogPost(string slug);
     }
 }
