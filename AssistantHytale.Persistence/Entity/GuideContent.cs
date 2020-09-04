@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AssistantHytale.Domain.Dto.Enum;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,9 @@ namespace AssistantHytale.Persistence.Entity
     {
         [Required]
         public Guid Guid { get; set; }
+
+        [Required]
+        public Guid GuideDetailGuid { get; set; }
 
         [Required]
         public AdminApprovalStatus Status { get; set; }
@@ -22,6 +26,7 @@ namespace AssistantHytale.Persistence.Entity
         #region Relationships
 
         public virtual GuideDetail GuideDetail { get; set; }
+        public virtual ICollection<GuideSection> Sections { get; set; }
 
         public static void MapRelationships(ModelBuilder modelBuilder)
         {
@@ -29,7 +34,7 @@ namespace AssistantHytale.Persistence.Entity
             modelBuilder.Entity<GuideContent>()
                 .HasOne(up => up.GuideDetail)
                 .WithMany(b => b.GuideContents)
-                .HasForeignKey(up => up.Guid)
+                .HasForeignKey(up => up.GuideDetailGuid)
                 .HasConstraintName("ForeignKey_Content_GuideDetails")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

@@ -30,6 +30,7 @@ namespace AssistantHytale.Data.Helper
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IServerRepository, ServerRepository>();
             services.AddTransient<IGuideDetailRepository, GuideDetailRepository>();
+            services.AddTransient<IGuideContentRepository, GuideContentRepository>();
 
             // Integration Repositories
             services.AddTransient<IHytaleBlogRepository, HytaleBlogRepository>();

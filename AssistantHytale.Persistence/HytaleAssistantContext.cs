@@ -12,6 +12,8 @@ namespace AssistantHytale.Persistence
         public DbSet<Server> Servers { get; set; }
         public DbSet<GuideDetail> GuideDetails { get; set; }
         public DbSet<GuideContent> GuideContents { get; set; }
+        public DbSet<GuideSection> GuideSections { get; set; }
+        public DbSet<GuideSectionItem> GuideSectionItems { get; set; }
 
 
         public HytaleAssistantContext(DbContextOptions<HytaleAssistantContext> options) : base(options)
@@ -32,6 +34,8 @@ namespace AssistantHytale.Persistence
             Server.MapRelationships(modelBuilder);
             GuideDetail.MapRelationships(modelBuilder);
             GuideContent.MapRelationships(modelBuilder);
+            GuideSection.MapRelationships(modelBuilder);
+            GuideSectionItem.MapRelationships(modelBuilder);
         }
     }
 

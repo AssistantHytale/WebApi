@@ -21,7 +21,7 @@ namespace AssistantHytale.Persistence.Contract
             };
         }
 
-        public static StoredProcedureParameter DecimalParam(string name, Guid value)
+        public static StoredProcedureParameter GuidParam(string name, Guid value)
         {
             return new StoredProcedureParameter
             {

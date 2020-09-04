@@ -7,6 +7,7 @@ using AssistantHytale.Persistence.Contract;
 using AssistantHytale.Persistence.Entity;
 using AssistantHytale.Persistence.Mapper.Dto;
 using AssistantHytale.Persistence.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssistantHytale.Api.Controllers
@@ -61,6 +62,24 @@ namespace AssistantHytale.Api.Controllers
             if (guideDetailsResult.HasFailed) return BadRequest();
 
             return Ok(guideDetailsResult.Value.ToDto());
+        }
+
+        /// <summary>
+        /// Submit Guide for approval and eventually publication.
+        /// </summary>
+        /// <param name="addGuide">
+        /// The desired page.
+        /// </param>
+        /// <response code="200">Successfully added Guide</response>
+        /// <response code="400">Unable to accept submitted Guide</response>
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SubmitGuide([FromBody]AddGuideDetailViewModel addGuide)
+        {
+            //Result addGuideResult = await _guideRepo.Add();
+            //if (addGuideResult.HasFailed) return BadRequest("Could not add submitted Guide");
+
+            return Ok();
         }
     }
 }
