@@ -250,3 +250,4 @@ uploads/
 
 desktop.ini
 AssistantHytale.Api/appsettings*.json
+AssistantHytale.Api/*appsettings*.json
