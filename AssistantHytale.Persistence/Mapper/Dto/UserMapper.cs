@@ -12,15 +12,8 @@ namespace AssistantHytale.Persistence.Mapper.Dto
             User persistence = new User
             {
                 Guid = guid,
-                OAuthType = oAuth.OAuthType,
                 Username = oAuth.Username,
-                OAuthUserId = oAuth.OAuthUserId,
-                EmailHash = emailHash,
-                Email = oAuth.Email,
-                JoinDate = DateTime.Now,
-                ProfileImageUrl = string.IsNullOrEmpty(oAuth.ProfileUrl)
-                    ? UserConstants.DefaultProfileUrl(oAuth.Username)
-                    : oAuth.ProfileUrl,
+                // TODO redo mapping
             };
             return persistence;
         }

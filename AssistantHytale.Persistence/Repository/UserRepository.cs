@@ -66,7 +66,8 @@ namespace AssistantHytale.Persistence.Repository
 
             try
             {
-                User user = await _db.Users.FirstAsync(u => u.OAuthType == oAuthType && u.EmailHash.Equals(emailHash));
+                // TODO redo mapping
+                User user = await _db.Users.FirstAsync(u => /*u.OAuthType == oAuthType && u.EmailHash.Equals(emailHash)*/ u.Username.Equals("fix pls"));
                 return new ResultWithValue<User>(true, user, string.Empty);
             }
             catch (Exception ex)
