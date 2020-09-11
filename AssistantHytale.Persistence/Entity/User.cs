@@ -11,7 +11,7 @@ namespace AssistantHytale.Persistence.Entity
         public Guid Guid { get; set; }
 
         [Required]
-        public string AssistantAppsGuid { get; set; }
+        public Guid AssistantAppsUserGuid { get; set; }
 
         [Required]
         [MaxLength(50)]

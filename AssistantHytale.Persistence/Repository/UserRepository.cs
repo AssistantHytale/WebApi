@@ -57,17 +57,11 @@ namespace AssistantHytale.Persistence.Repository
             }
         }
 
-        public async Task<ResultWithValue<User>> GetUser(OAuthProviderType oAuthType, string emailHash)
+        public async Task<ResultWithValue<User>> GetUserByAssistantAppsGuid(Guid assistantAppsGuid)
         {
-            if (oAuthType == OAuthProviderType.Unknown)
-            {
-                return new ResultWithValue<User>(false, new User(), "Unknown OAuth provider");
-            }
-
             try
             {
-                // TODO redo mapping
-                User user = await _db.Users.FirstAsync(u => /*u.OAuthType == oAuthType && u.EmailHash.Equals(emailHash)*/ u.Username.Equals("fix pls"));
+                User user = await _db.Users.FirstAsync(u => u.AssistantAppsUserGuid.Equals(assistantAppsGuid));
                 return new ResultWithValue<User>(true, user, string.Empty);
             }
             catch (Exception ex)
@@ -78,8 +72,8 @@ namespace AssistantHytale.Persistence.Repository
 
         public async Task<Result> Add(User addItem)
         {
-            bool usernameExistsResult = await _db.Users.AnyAsync(u => u.Username.Equals(addItem.Username));
-            if (usernameExistsResult) return new Result(false, "Username exists in database");
+            bool assistantAppsUserExistsResult = await _db.Users.AnyAsync(u => u.AssistantAppsUserGuid.Equals(addItem.AssistantAppsUserGuid));
+            if (assistantAppsUserExistsResult) return new Result(false, "AssistantApps User exists in database");
 
             try
             {

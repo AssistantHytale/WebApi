@@ -8,6 +8,7 @@ namespace AssistantHytale.Domain.Constants
         {
             "Token",
             "TokenExpiry",
+            "UserGuid",
             "loadingTitle",
             "Authorization",
             "reloadtype",
