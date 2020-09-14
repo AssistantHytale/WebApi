@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AssistantHytale.Data.Repository.Interface;
 using AssistantHytale.Domain.Configuration.Interface;
@@ -10,7 +8,6 @@ using AssistantHytale.Domain.Result;
 using AssistantHytale.Persistence.Entity;
 using AssistantHytale.Persistence.Mapper.Dto;
 using AssistantHytale.Persistence.Repository.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssistantHytale.Api.Controllers

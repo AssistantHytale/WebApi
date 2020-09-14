@@ -1,6 +1,4 @@
 ﻿using System;
-using AssistantHytale.Domain.Constants;
-using AssistantHytale.Domain.Contract;
 using AssistantHytale.Domain.Dto.ViewModel;
 using AssistantHytale.Persistence.Entity;
 
