@@ -83,7 +83,7 @@ namespace AssistantHytale.Data.Helper
                 c.OperationFilter<AuthorizeCheckOperationFilter>();
 
                 // Set the comments path for the Swagger JSON and UI.
-                const string xmlFile = "AssistantHytale.Api.xml";
+                const string xmlFile = "AssistantHytale.WebApi.xml";
                 string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
