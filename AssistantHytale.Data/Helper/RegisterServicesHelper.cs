@@ -2,7 +2,6 @@
 using AssistantHytale.Data.Cache.Interface;
 using AssistantHytale.Data.Repository;
 using AssistantHytale.Data.Repository.Interface;
-using AssistantHytale.Data.Service;
 using AssistantHytale.Domain.Configuration.Interface;
 using AssistantHytale.Integration.Repository;
 using AssistantHytale.Integration.Repository.Interface;
@@ -35,7 +34,7 @@ namespace AssistantHytale.Data.Helper
             services.AddTransient<IGithubRepository, GithubRepository>();
 
             // Services
-            services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<IUserService, UserService>();
 
             // MemoryCache stuffs
             services.AddSingleton<ICustomCache, CustomCache>();
